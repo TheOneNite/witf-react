@@ -1,0 +1,63 @@
+.colors {
+  color: #d53529;
+  color: #970215;
+  color: #949496;
+  color: #1c1c1c;
+}
+.bg {
+  height: 100%;
+  background-color: #1c1c1c;
+}
+.menu-main {
+  display: flex;
+  justify-content: center;
+}
+.main-button {
+  width: 128px;
+  height: 64px;
+  border: 3px solid #970215;
+  background-color: #1c1c1c;
+  color: #949496;
+}
+
+.list-style {
+  color: #949496;
+  list-style-type: square;
+}
+
+.overlay {
+  z-index: 50;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+  z-index: 100;
+  position: fixed;
+  top: 200px;
+  left: 200px;
+  right: 200px;
+  background-color: white;
+}
+
+.item-style {
+  padding: 10px;
+  height: 32px;
+  border: 1px solid #949496;
+  text-justify: center;
+  font: size 24px;
+}
+
+.button-delete {
+  height: 100%;
+  background-color: #d53529;
+  color: #1c1c1c;
+  text-align: center;
+  text-justify: center;
+  font-stretch: expanded;
+  margin-left: 20px;
+}
