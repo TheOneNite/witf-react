@@ -1,9 +1,18 @@
 import React, { Component } from "react";
+import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store.js";
 //import MainMenu from "./MainMenu.jsx";
 //import ContentWrapper from "./Content.jsx";
 import { MenuButton, PurchaseButton } from "./Buttons.jsx";
 import ShoppingForm from "./ShoppingForm.jsx";
-import ListItem from "./ListItem.jsx";
+
+import Signup from "./views/Signup.jsx";
+import Login from "./views/Login.jsx";
+import Fridge from "./views/fridge/Fridge.jsx";
+import NavBar from "./views/navbar/NavBar.jsx";
+import List from "./views/list/List.jsx";
+import Recipes from "./views/recipes/Recipes.jsx";
 
 class App extends Component {
   constructor(props) {
@@ -50,11 +59,7 @@ class App extends Component {
     return (
       <div>
         {this.drawItems()}
-        <div>
-          <MenuButton
-            onClick={this.loadFridge}
-            displayText="View Fridge Contents"
-          />
+        <div className="shop-form-style">
           <PurchaseButton list={this.state.shopList} reload={this.loadFridge} />
           <ShoppingForm reload={this.loadShop} />
         </div>
@@ -74,12 +79,7 @@ class App extends Component {
   };
 
   drawFridge = () => {
-    return (
-      <div>
-        {this.drawItems()}
-        <MenuButton onClick={this.loadShop} displayText="View Shopping List" />
-      </div>
-    );
+    return <div>{this.drawItems()}</div>;
   };
 
   loadFridge = async () => {
@@ -97,21 +97,35 @@ class App extends Component {
     return <div>Error: page not found</div>;
   };
 
+  scanRecipt = async () => {
+    await fetch("/ocr-scan");
+  };
+
+  OCRtest = async () => {
+    await fetch("/ocr-test");
+  };
+  /*
+<Route exact={true} path="/shop" component={Shop} />
+          
+*/
+
   render = () => {
     return (
-      <div className="bg">
-        <div>
-          <MenuButton
-            onClick={this.loadFridge}
-            displayText="View Fridge Contents"
-          />
-          <MenuButton
-            onClick={this.loadShop}
-            displayText="View Shopping List"
-          />
-        </div>
-        <div>{this.state.drawContent()}</div>
-      </div>
+      <Provider store={store}>
+        <BrowserRouter>
+          <div>
+            <NavBar />
+            <Route exact={true} path="/" component={Login} />
+            <Route exact={true} path="/signup" component={Signup} />
+            <Route exact={true} path="/login" component={Login} />
+            <Route exact={true} path="/fridge" component={Fridge} />
+            <Route exact={true} path="/list" component={List} />
+            <Route exact={true} path="/recipes/" component={Recipes} />
+            <Route exact={true} path="/recipes/:route" component={Recipes} />
+            <Route exact={true} path="/settings" render={this.drawError} />
+          </div>
+        </BrowserRouter>
+      </Provider>
     );
   };
 }

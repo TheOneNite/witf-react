@@ -1,0 +1,227 @@
+[
+  {
+    "small": "tsp",
+    "large": "tbsp",
+    "factor": 3
+  },
+  {
+    "small": "tsp",
+    "large": "oz",
+    "factor": 5.7
+  },
+  {
+    "small": "tsp",
+    "large": "cup",
+    "factor": 48
+  },
+  {
+    "small": "tsp",
+    "large": "quart",
+    "factor": 192
+  },
+  {
+    "small": "tsp",
+    "large": "gallon",
+    "factor": 768
+  },
+  {
+    "large": "tsp",
+    "small": "mL",
+    "factor": 2.9
+  },
+  {
+    "small": "tsp",
+    "large": "L",
+    "factor": 202
+  },
+  {
+    "small": "tsp",
+    "large": "g",
+    "factor": ""
+  },
+  {
+    "small": "tsp",
+    "large": "kg",
+    "factor": ""
+  },
+  {
+    "small": "tbsp",
+    "large": "oz",
+    "factor": 2
+  },
+  {
+    "small": "tbsp",
+    "large": "cup",
+    "factor": 16
+  },
+  {
+    "small": "tbsp",
+    "large": "quart",
+    "factor": 64
+  },
+  {
+    "small": "tbsp",
+    "large": "gallon",
+    "factor": 256
+  },
+  {
+    "large": "tbsp",
+    "small": "mL",
+    "factor": 15
+  },
+  {
+    "small": "tbsp",
+    "big": "L",
+    "factor": 66
+  },
+  {
+    "large": "tbsp",
+    "small": "g",
+    "factor": ""
+  },
+  {
+    "small": "tbsp",
+    "large": "kg",
+    "factor": ""
+  },
+  {
+    "small": "oz",
+    "large": "cup",
+    "factor": 8
+  },
+  {
+    "small": "oz",
+    "large": "quart",
+    "factor": 32
+  },
+  {
+    "small": "oz",
+    "large": "gallon",
+    "factor": 128
+  },
+  {
+    "large": "oz",
+    "small": "mL",
+    "factor": 30
+  },
+  {
+    "small": "oz",
+    "large": "L",
+    "factor": 33
+  },
+  {
+    "large": "oz",
+    "small": "g",
+    "factor": 28
+  },
+  {
+    "small": "oz",
+    "large": "kg",
+    "factor": 35
+  },
+  {
+    "small": "cup",
+    "large": "quart",
+    "factor": 4
+  },
+  {
+    "small": "cup",
+    "large": "gallon",
+    "factor": 16
+  },
+  {
+    "large": "cup",
+    "small": "mL",
+    "factor": 250
+  },
+  {
+    "small": "cup",
+    "large": "L",
+    "factor": 4
+  },
+  {
+    "large": "cup",
+    "small": "g",
+    "factor": ""
+  },
+  {
+    "small": "cup",
+    "large": "kg",
+    "factor": ""
+  },
+  {
+    "small": "quart",
+    "large": "gallon",
+    "factor": 4
+  },
+  {
+    "large": "quart",
+    "small": "mL",
+    "factor": 950
+  },
+  {
+    "small": "quart",
+    "large": "L",
+    "factor": 1
+  },
+  {
+    "large": "quart",
+    "small": "g",
+    "factor": ""
+  },
+  {
+    "small": "quart",
+    "large": "kg",
+    "factor": ""
+  },
+  {
+    "large": "gallon",
+    "small": "mL",
+    "factor": 3800
+  },
+  {
+    "large": "gallon",
+    "small": "L",
+    "factor": 3.8
+  },
+  {
+    "large": "gallon",
+    "small": "g",
+    "factor": ""
+  },
+  {
+    "large": "gallon",
+    "small": "kg",
+    "factor": ""
+  },
+  {
+    "small": "mL",
+    "large": "L",
+    "factor": 1000
+  },
+  {
+    "small": "mL",
+    "large": "g",
+    "factor": ""
+  },
+  {
+    "small": "mL",
+    "large": "kg",
+    "factor": ""
+  },
+  {
+    "large": "L",
+    "small": "g",
+    "factor": ""
+  },
+  {
+    "small": "L",
+    "large": "kg",
+    "factor": ""
+  },
+  {
+    "small": "g",
+    "large": "kg",
+    "factor": 1000
+  }
+]

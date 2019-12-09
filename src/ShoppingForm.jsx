@@ -30,19 +30,25 @@ class ShoppingForm extends Component {
   render = () => {
     return (
       <form onSubmit={this.submitHandler}>
-        <input
-          type="text"
-          onChange={this.nameChangeHandler}
-          value={this.state.itemName}
-          placeholder="Item"
-        ></input>
-        <input
-          type="text"
-          onChange={this.qtyChangeHandler}
-          value={this.state.qty}
-          placeholder="quantity"
-        ></input>
-        <input type="submit"></input>
+        <div className="shop-form-style">
+          <div className="shop-input-style">
+            <input
+              type="text"
+              onChange={this.nameChangeHandler}
+              value={this.state.itemName}
+              placeholder="Item"
+              className="text-box"
+            ></input>
+            <input
+              type="text"
+              onChange={this.qtyChangeHandler}
+              value={this.state.qty}
+              placeholder="quantity"
+              className="text-box"
+            ></input>
+          </div>
+          <input type="submit" className="button-style"></input>
+        </div>
       </form>
     );
   };
