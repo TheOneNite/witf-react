@@ -119,7 +119,36 @@ let processScan = reciptArr => {
   return newItems;
 };
 // units ----------------------------------------------------------------------------------------------------
-//Food library lookups etc
+//Food library lookups etc ----------------------------------------------------------------------------------
+const checkFridge = (list, fridge) => {
+  const itemLookup = item => {
+    let buy = true;
+    for (let i = 0; i < fridge.length; i++) {
+      let fItem = fridge[i];
+      if (item.name === fItem.name) {
+        //name match
+        if (fItem.unit === item.unit) {
+          //ez lyfe
+          buy = item.qty >= fItem.qty;
+          break;
+        } else {
+          //convert list item to have same units as fridge item
+          let cItem = convert.units(item.qty, item.unit, fItem.unit);
+          console.log("converted:");
+          if (isNaN(cItem)) {
+            break;
+          }
+          buy = cItem.qty >= fItem.qty;
+        }
+      }
+    }
+    return buy;
+  };
+  list = list.filter(itemLookup);
+  //console.log("filtered list");
+  //console.log(list);
+  return list;
+};
 const getFoodbyID = (id, searchArr) => {
   let result = searchArr.filter(searchArr => {
     return searchArr.id === id;
@@ -379,44 +408,55 @@ app.post("/list", upload.none(), (req, res) => {
   findUIDbySID(req.cookies.sid).then(session => {
     const uid = session.uid;
     let allItems = JSON.parse(req.body.items);
-    let item = allItems[0];
-    if (item.name.split(" ").length > 0) {
-      let words = item.name.split(" ");
-      words = words.map(str => {
-        return str.slice(0, 1).toUpperCase() + str.slice(1);
+    let filter = JSON.parse(req.body.neededOnly);
+    if (filter) {
+      console.log("removing items already in fridge");
+      mongoDb.collection("fridge").findOne({ uid }, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        checkFridge(allItems, fridge);
+        //allItems = checkFridge(allItems, fridge);
       });
-      item.name = words.join("");
     }
-    item.id = tools.generateId(8);
+    allItems.forEach(item => {
+      console.log("adding item" + item.name);
+      item.id = tools.generateId(8);
+    });
     mongoDb.collection("list").findOne({ uid }, (err, result) => {
       if (err) {
         console.log(err);
-        return;
+        throw err;
       }
       if (result === null) {
         mongoDb
           .collection("list")
-          .insertOne({ uid: uid, data: [item] }, (err, result) => {
+          .insertOne({ uid: uid, data: allItems }, (err, result) => {
             if (err) {
               console.log(err);
               throw err;
             }
             console.log("list entry added for user " + uid);
           });
+        res.send(JSON.stringify({ success: true }));
         return;
       }
       let newList = result.data;
-      newList = newList.concat(item);
+      newList = newList.concat(allItems);
       mongoDb
         .collection("list")
         .updateOne({ uid }, { $set: { data: newList } }, (err, result) => {
           if (err) {
             console.log(err);
+            res.send(JSON.stringify({ success: false, msg: "db write error" }));
+            return;
           }
-          console.log("added " + item.name + " to shopping list");
+          allItems.forEach(item => {
+            console.log("added " + item.name + " to shopping list");
+          });
+          res.send(JSON.stringify({ success: true }));
         });
     });
-    res.send(JSON.stringify({ success: true }));
   });
 });
 app.post("/delete-list", upload.none(), (req, res) => {
@@ -453,6 +493,36 @@ app.post("/delete-list", upload.none(), (req, res) => {
           res.send(JSON.stringify({ success: true }));
         });
     });
+  });
+});
+app.post("/update-list", upload.none(), (req, res) => {
+  findUIDbySID(req.cookies.sid).then(session => {
+    if (session.success) {
+      let uid = session.uid;
+      let newItem = JSON.parse(req.body.item);
+      mongoDb.collection("list").findOne({ uid }, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        let list = result.data;
+        for (let i = 0; i < list.length; i++) {
+          let listItem = list[i];
+          if (listItem.id === newItem.id) {
+            list.splice(i, 1, newItem);
+            break;
+          }
+        }
+        mongoDb
+          .collection("list")
+          .updateOne({ uid }, { $set: { data: list } }, (err, result) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log("updated shopping list");
+          });
+      });
+      return;
+    }
   });
 });
 app.post("/list-clear", upload.none(), (req, res) => {
@@ -632,7 +702,11 @@ app.post("/eat", upload.none(), (req, res) => {
       if (parseInt(req.body.slideValue) >= 100) {
         console.log("eating all");
         res.send(
-          JSON.stringify({ success: true, finished: true, itemId: reqItem.id })
+          JSON.stringify({
+            success: true,
+            finished: true,
+            itemId: reqItem.id
+          })
         );
         return;
       }

@@ -244,6 +244,7 @@ body {
 .wrapper-recipe-list {
   overflow: auto;
   padding-left: 1px;
+  padding-right: 1px;
 }
 .wrapper-recipe-category {
   box-sizing: border-box;
@@ -258,6 +259,9 @@ body {
   border-top: 1px solid #949496;
   margin: 5px;
   padding: 5px;
+}
+.recipe-ingredient:nth-child(1) {
+  border-top: none;
 }
 .recipe-list-header {
   font-variant: small-caps;
@@ -474,7 +478,6 @@ body {
   background-color: #1c1c1c;
   color: #949496;
   border: 2px solid #949496;
-  max-width: 50vw;
 }
 .list-style {
   width: 100%;

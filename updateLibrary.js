@@ -38,21 +38,36 @@ const updateLibrary = () => {
         });
         newImgs.forEach(filePath => {
           let itemName = filePath.split(".").shift();
-          mongoDb
-            .collection("lib")
-            .insertOne(
-              {
-                foodId: tools.generateId(10),
-                imgPath: filePath,
-                names: [itemName]
-              },
-              (err, result) => {
-                if (err) {
-                  throw err;
-                }
-                console.log(itemName + " successfully added to db");
+          let itemNames = [itemName];
+          let multiword = [];
+          let wordStart = 0;
+          for (let i = 0; i < itemName.length; i++) {
+            let char = itemName[i];
+            if (char.toUpperCase() === char) {
+              multiword.push(itemName.slice(wordStart, i));
+              wordStart = i;
+            }
+          }
+          if (multiword.length > 0) {
+            itemNames.push(multiword.join(" "));
+            let lastWord = multiword.pop();
+            multiword.push(lastWord + "s");
+            itemNames.push(multiword.join(" "));
+          }
+          itemNames.push(itemName + "s");
+          mongoDb.collection("lib").insertOne(
+            {
+              foodId: tools.generateId(10),
+              imgPath: filePath,
+              names: itemNames
+            },
+            (err, result) => {
+              if (err) {
+                throw err;
               }
-            );
+              console.log(itemName + " successfully added to db");
+            }
+          );
         });
       });
   });

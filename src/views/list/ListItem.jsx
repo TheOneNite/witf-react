@@ -11,7 +11,8 @@ class UnconnectedListItem extends Component {
       editing: false,
       name: this.props.data.name,
       qty: this.props.data.qty,
-      unit: this.props.data.unit
+      unit: this.props.data.unit,
+      data: this.props.data
     };
   }
 
@@ -23,9 +24,32 @@ class UnconnectedListItem extends Component {
   toggleEdit = event => {
     this.setState({ editing: !this.state.editing });
   };
+  handleInput = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+  handleSubmit = event => {
+    event.preventDefault();
+    let newData = {
+      ...this.state.data,
+      name: this.state.name,
+      qty: this.state.qty,
+      unit: this.state.unit
+    };
+    let data = new FormData();
+    data.append("item", JSON.stringify(newData));
+    fetch("/update-list", {
+      method: "POST",
+      body: data,
+      credentials: "include"
+    });
+    this.setState({
+      editing: false,
+      data: newData
+    });
+  };
   removeItem = async () => {
     let data = new FormData();
-    let item = JSON.stringify(this.props.data);
+    let item = JSON.stringify(this.state.data);
     data.append("item", item);
     const res = await fetch("/delete-list", {
       method: "POST",
@@ -44,7 +68,7 @@ class UnconnectedListItem extends Component {
     alert("Error deleting item from list");
   };
   toFridge = async event => {
-    let item = JSON.stringify([this.props.data]);
+    let item = JSON.stringify([this.state.data]);
     let data = new FormData();
     data.append("items", item);
     const res = await fetch("/fridge", {
@@ -92,7 +116,7 @@ class UnconnectedListItem extends Component {
           <input
             type="text"
             placeholder="units"
-            name="units"
+            name="unit"
             onChange={this.handleInput}
             className="input-list"
             value={this.state.unit}
@@ -107,9 +131,9 @@ class UnconnectedListItem extends Component {
     }
     return (
       <div className="list-style">
-        {this.props.data.name}
-        {this.props.data.qty > 1 && ": " + this.props.data.qty}
-        {this.props.data.unit && " " + this.props.data.unit}
+        {this.state.data.name}
+        {": " + this.state.data.qty}
+        {this.state.data.unit && " " + this.state.data.unit}
       </div>
     );
   };
@@ -122,7 +146,7 @@ class UnconnectedListItem extends Component {
             >
           </button>
           <button
-            item={this.props.data}
+            item={this.state.data}
             onClick={this.removeItem}
             className="button-delete"
           >

@@ -72,7 +72,7 @@ class UnconnectedRecipeList extends Component {
   };
   renderRecipe = recData => {
     return (
-      <Link className="recipe-list-link">
+      <Link to={"/recipes/" + recData.id} className="recipe-list-link">
         <button name={recData.id} className="recipe-list-item">
           {recData.title}
         </button>
