@@ -1174,5 +1174,5 @@ app.all("/*", (req, res, next) => {
 
 app.listen(4000, "0.0.0.0", () => {
   console.log("Server running on port 4000");
-  console.log(keyPath);
+  //console.log(keyPath);
 });
