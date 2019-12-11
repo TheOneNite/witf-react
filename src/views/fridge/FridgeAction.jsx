@@ -10,6 +10,11 @@ class UnconnectedFridgeAction extends Component {
   toggleAdd = event => {
     this.setState({ addItem: !this.state.addItem });
   };
+  inputHandler = event => {
+    this.setState({ searchQ: event.target.value }, () => {
+      this.props.dispatch({ type: "search", query: this.state.searchQ });
+    });
+  };
   render = () => {
     return (
       <div>
@@ -17,6 +22,13 @@ class UnconnectedFridgeAction extends Component {
         <button className="food-button" onClick={this.toggleAdd}>
           +
         </button>
+        <input
+          type="text"
+          className="input-fridge-search"
+          value={this.state.searchQ}
+          onChange={this.inputHandler}
+          placeholder="search"
+        />
       </div>
     );
   };

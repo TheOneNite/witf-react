@@ -333,6 +333,15 @@ body {
   font-size: 22px;
   padding: 5px;
 }
+.input-fridge-search {
+  width: 100%;
+  font-variant: small-caps;
+  font-size: 28px;
+  background-color: #1c1c1c;
+  border: 2px solid #970215;
+  color: #949496;
+  padding: 15px;
+}
 .file-upload {
   color: #949496;
 }
@@ -386,6 +395,24 @@ body {
   height: 100%;
   width: 100%;
   z-index: 2;
+}
+.overlay-expiry {
+  background-color: rgba(214, 202, 73, 0.8);
+  color: rgba(0, 0, 0, 0);
+  -webkit-text-stroke: 5px black;
+  height: 100%;
+  width: 100%;
+  z-index: 5;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-size: 25vw;
+  font-stretch: expanded;
+  font-weight: bolder;
+  text-align: center;
+  padding: auto auto auto auto;
+  box-sizing: border-box;
+  vertical-align: middle;
 }
 .button-list-add {
   background-color: inherit;

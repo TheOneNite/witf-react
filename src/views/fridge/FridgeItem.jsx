@@ -7,7 +7,7 @@ import EatFoodForm from "./EatFoodForm.jsx";
 class UnconnectedFridgeItem extends Component {
   constructor(props) {
     super(props);
-    this.state = { selected: false, eatForm: false };
+    this.state = { selected: false, eatForm: false, notify: false };
   }
   toggleSelect = () => {
     this.setState({ selected: !this.state.selected });
@@ -50,6 +50,16 @@ class UnconnectedFridgeItem extends Component {
     let msDelta = currentDate - this.props.data.addDate;
     let dayDelta = msDelta / msDay;
     return Math.floor(dayDelta);
+  };
+  checkExpiry = () => {
+    let currentDate = new Date().getTime();
+    const msDay = 86400000;
+    let delta = currentDate - this.props.data.addDate;
+    delta = delta / msDay;
+
+    return (
+      Math.floor(delta) > this.props.expireDays && this.props.data.perishable
+    );
   };
   renderDetails = () => {
     console.log(this.props.data);
@@ -157,13 +167,14 @@ class UnconnectedFridgeItem extends Component {
         className="item-wrapper"
       >
         <img src={this.props.data.imgPath} className="item-img" />
+        {this.checkExpiry() && <div className="overlay-expiry">!</div>}
       </div>
     );
   };
 }
 
 const mapState = state => {
-  return {};
+  return { expireDays: state.expiry };
 };
 
 const FridgeItem = connect(mapState)(UnconnectedFridgeItem);

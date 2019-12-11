@@ -38,13 +38,6 @@ const ocr = require("./modules/recipt-ocr.js");
 const libTools = require("./modules/libLookup.js");
 const convert = require("./backend/utilites/unitConverter.js");
 
-let fridge = {
-  milk: "1/2 carton",
-  greenBeans: "500g",
-  coconutYoghurt: "1/2 container"
-};
-let shoppingList = { food: "lots", dessert: "the most" };
-
 //functions
 
 let ocrTest = async () => {};
@@ -225,6 +218,12 @@ initializeUser = uid => {
         console.log(err);
       }
     });
+  mongoDb.collection("users").insertOne({
+    uid: uid,
+    recLibrary: [],
+    recCats: ["lunch", "dinner", "breakfast", "dessert"],
+    expTime: 3
+  });
 };
 
 findUIDbySID = sid => {
@@ -366,6 +365,54 @@ app.get("/autologin", (req, res) => {
       }
       res.send(JSON.stringify({ success: false, user: true }));
     });
+});
+app.get("/user-data", (req, res) => {
+  findUIDbySID(req.cookies.sid).then(session => {
+    if (session.success) {
+      const uid = session.uid;
+      mongoDb.collection("users").findOne({ uid }, (err, result) => {
+        if (err) {
+          console.log(err);
+          // send db read error
+        }
+        if (result === null) {
+          // send no user error
+        }
+        res.send(JSON.stringify({ success: true, data: result }));
+      });
+      return;
+    }
+    res.send(
+      JSON.stringify({ success: false, msg: "no active session found" })
+    );
+  });
+});
+app.post("/edit-user", upload.none(), (req, res) => {
+  console.log("POST /edit-user");
+  findUIDbySID(req.cookies.sid).then(session => {
+    if (session.success) {
+      const uid = session.uid;
+      let edits = JSON.parse(req.body.edits);
+      let props = Object.keys(edits);
+      props.forEach(editProp => {
+        mongoDb
+          .collection("users")
+          .updateOne(
+            { uid },
+            { $set: { [editProp]: edits[editProp] } },
+            (err, result) => {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+      });
+      res.send(JSON.stringify({ success: true }));
+      return;
+    }
+    // send no session error
+    res.send(JSON.stringify({ success: false }));
+  });
 });
 // Shopping List Endpoints -----------------------------------------------------------------------------
 app.get("/fetch-list", (req, res) => {
@@ -1027,6 +1074,95 @@ app.post("/recipe-add", upload.none(), (req, res) => {
       return;
     }
     res.send(JSON.stringify({ success: false, msg: "no session found" }));
+  });
+});
+app.get("/rec-cats", (req, res) => {
+  console.log("GET: /rec-cats");
+  findUIDbySID(req.cookies.sid).then(session => {
+    if (session.success) {
+      const uid = session.uid;
+      mongoDb.collection("users").findOne({ uid }, (err, result) => {
+        if (err) {
+          console.log(err);
+          res.send(
+            JSON.stringify({ success: false, msg: "database read error" })
+          );
+          return;
+        }
+        if (result === null) {
+          console.log("no user");
+          res.send(JSON.stringify({ success: false, msg: "no user founds" }));
+        }
+        if (result.recCats === undefined) {
+          mongoDb.collection("users").updateOne(
+            { uid },
+            {
+              $set: { recCats: ["lunch", "dinner", "breakfast", "dessert"] }
+            },
+            (err, result) => {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+        }
+        console.log("user data retreived");
+        res.send(JSON.stringify({ success: true, cats: result.recCats }));
+      });
+      return;
+    }
+    res.send(JSON.stringify({ success: false, msg: "no active user found" }));
+  });
+});
+app.post("/edit-cats", upload.none(), (req, res) => {
+  console.log("POST /edit-cats");
+  findUIDbySID(req.cookies.sid).then(session => {
+    if (session.success) {
+      const uid = session.uid;
+      let action = req.body.action;
+      console.log(action);
+      mongoDb.collection("users").findOne({ uid }, (err, result) => {
+        if (err) {
+          console.log(err);
+          //send db read error
+        }
+        if (result === null) {
+          console.log("no user found");
+          // send no user error
+        }
+        let oldCats = result.recCats;
+        let newName = req.body.category;
+        let editCat = req.body.editCat;
+        let newCats = oldCats;
+        if (action === "add") {
+          console.log("adding " + newName);
+          newCats = oldCats.concat(newName);
+        }
+        if (action === "edit") {
+          let i = oldCats.indexOf(editCat);
+          oldCats.splice(i, 1, newName);
+          newCats = oldCats;
+        }
+        if (action === "delete") {
+          newCats = oldCats.filter(name => {
+            return name != editCat;
+          });
+        }
+        mongoDb
+          .collection("users")
+          .updateOne({ uid }, { $set: { recCats: newCats } }, (err, result) => {
+            if (err) {
+              console.log(err);
+            }
+            res.send(JSON.stringify({ success: true, recCats: newCats }));
+          });
+      });
+
+      return;
+    }
+    res.send(
+      JSON.stringify({ success: false, msg: "no active session found" })
+    );
   });
 });
 // Your endpoints go before this line

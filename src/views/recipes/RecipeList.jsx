@@ -134,7 +134,7 @@ class UnconnectedRecipeList extends Component {
 const mapState = state => {
   return {
     recipes: state.recLib,
-    categories: ["dinner", "lunch", "dessert", "breakfast"]
+    categories: state.recCats
   };
 };
 

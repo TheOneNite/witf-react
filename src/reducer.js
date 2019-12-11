@@ -20,6 +20,15 @@ const reducer = (state, action) => {
   if (action.type === "loadRecLibrary") {
     return { ...state, recLib: action.library };
   }
+  if (action.type === "loadRecCats") {
+    return { ...state, recCats: action.cats };
+  }
+  if (action.type === "setExpiry") {
+    return { ...state, expiry: action.expiry };
+  }
+  if (action.type === "search") {
+    return { ...state, query: action.query };
+  }
   return state;
 };
 
