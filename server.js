@@ -15,7 +15,7 @@ const projectID = "witf-257419";
 const cvAuthDir =
   "export GOOGLE_APPLICATION_CREDENTIALS='C:/Users/travi/decode/witf/react-app/cloudVision/witf-257419-340fa03fa322.json'";
 console.log(keyPath);
-const client = new vision.ImageAnnotatorClient({ projectID: keyPath });
+const client = new vision.ImageAnnotatorClient();
 
 const MongoClient = require("mongodb").MongoClient;
 const dbLogin = require("./backend/utilites/databaseURL.js");
