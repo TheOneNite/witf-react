@@ -31,7 +31,7 @@ const fs = require("fs");
 
 app.use(cookieParser());
 
-reloadMagic(app);
+//reloadMagic(app);
 
 //custom modules setup
 const ocr = require("./modules/recipt-ocr.js");
