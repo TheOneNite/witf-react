@@ -8,7 +8,7 @@ const tools = require("./backend/utilites/tools.js");
 
 const auth = require("password-hash");
 const cookieParser = require("cookie-parser");
-const reloadMagic = require("./reload-magic.js");
+//const reloadMagic = require("./reload-magic.js");
 const vision = require("@google-cloud/vision");
 const projectID = "witf-257419";
 //const keyPath = "__dirname + "\\cloudVision\\witf-52d1a1543c18.json";"
