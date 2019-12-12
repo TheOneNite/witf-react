@@ -152,7 +152,7 @@ const getFoodbyID = (id, searchArr) => {
   return [];
 };
 const getLibItem = async itemData => {
-  const imgPrefix = "http://localhost:4000/foodAssets/";
+  const imgPrefix = "/foodAssets/";
   itemData.addDate = new Date().getTime();
   itemData.id = tools.generateId(8);
   const newData = new Promise((resolve, reject) => {
