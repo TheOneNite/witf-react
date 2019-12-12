@@ -87,10 +87,14 @@ class UnconnectedReciptScanner extends Component {
     });
     this.setState({ parsedItems: list });
   };
+  cancelUpload = event => {
+    console.log("cancle");
+    this.props.dispatch({ type: "cancelImg" });
+  };
   render = () => {
     if (this.state.status === "none") {
       return (
-        <div>
+        <div className="wrapper-scan">
           <form onSubmit={this.submitHandler} className="wrapper-img-upload">
             Upload image of recipt
             <input
@@ -100,6 +104,9 @@ class UnconnectedReciptScanner extends Component {
             />
             <button className="button-base">Parse Image</button>
           </form>
+          <button onClick={this.cancelUpload} className="button-base">
+            Cancel
+          </button>
         </div>
       );
     }

@@ -44,7 +44,7 @@ class UnconnectedSignup extends Component {
       return <Redirect to="/fridge" />;
     }
     return (
-      <div>
+      <div className="wrapper-auth">
         Sign Up
         {this.state.err.exists && <div>{this.state.err.msg}</div>}
         <form onSubmit={this.submitHandler}>
@@ -55,12 +55,13 @@ class UnconnectedSignup extends Component {
               name="username"
               onChange={this.inputHandler}
               value={this.state.username}
-              className="text-box"
+              className="input-auth"
             />
             <input
               type="password"
               placeholder="password"
               name="password"
+              className="input-auth"
               onChange={this.inputHandler}
               value={this.state.password}
             />
@@ -68,10 +69,11 @@ class UnconnectedSignup extends Component {
               type="password"
               placeholder="confirm password"
               name="cpass"
+              className="input-auth"
               onChange={this.inputHandler}
               value={this.state.cpass}
             />
-            <button className="button-style">Sign Up</button>
+            <button className="button-auth">Sign Up</button>
             <Link to="/login">login</Link>
           </div>
         </form>

@@ -14,6 +14,9 @@ const reducer = (state, action) => {
   if (action.type == "addImg") {
     return { ...state, listUpload: true };
   }
+  if (action.type === "cancelImg") {
+    return { ...state, listUpload: false };
+  }
   if (action.type === "loadRecipe") {
     return { ...state, displayRecipe: action.recData };
   }

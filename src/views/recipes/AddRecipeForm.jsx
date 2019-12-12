@@ -7,16 +7,31 @@ import RecipeIngredient from "./RecipeIngredient.jsx";
 class UnconnectedAddRecipeForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { ingredients: [], manualMode: false, title: "Peanut Sauce" };
+    this.state = { ingredients: [], manualMode: false };
   }
   inputHandler = event => {
     this.setState({ [event.target.name]: event.target.value });
+  };
+  handleDropdown = event => {
+    this.setState({ category: event.target.value });
+  };
+  loadCats = async () => {
+    const res = await fetch("/rec-cats", { credentials: "include" });
+    let bod = await res.text();
+    bod = JSON.parse(bod);
+    console.log(bod);
+    if (bod.success) {
+      this.props.dispatch({ type: "loadRecCats", cats: bod.cats });
+      return;
+    }
+    console.log(bod);
+    alert(bod.msg);
   };
   submitRecipe = async event => {
     let data = new FormData();
     let newRec = {
       title: this.state.title,
-      cat: "dinner",
+      cat: this.state.category,
       ingredients: this.state.ingredients,
       method: this.state.method
     };
@@ -82,6 +97,7 @@ class UnconnectedAddRecipeForm extends Component {
               onChange={this.importHandler}
               value={this.state.importIng}
               className="textblock-recipe"
+              placeholder="Paste ingredient list here"
             />
           </div>
           <button
@@ -129,6 +145,10 @@ class UnconnectedAddRecipeForm extends Component {
     if (this.state.redir) {
       return <Redirect to={this.state.redir} />;
     }
+    if (this.props.categories === undefined) {
+      this.loadCats();
+      return <div>Loading...</div>;
+    }
     return (
       <div className="container-recipe-form">
         <div className="wrapper-recipe-header">
@@ -142,7 +162,7 @@ class UnconnectedAddRecipeForm extends Component {
           />
           <div>
             Category:{"  "}
-            <select className="dropdown-base">
+            <select className="dropdown-base" onChange={this.handleDropdown}>
               {this.props.categories.map(this.renderCatDropdown)}
             </select>
           </div>
@@ -167,6 +187,7 @@ class UnconnectedAddRecipeForm extends Component {
               onChange={this.inputHandler}
               value={this.state.method}
               className="textblock-recipe"
+              placeholder="Paste recipe method here"
             />
           </div>
         </div>
@@ -179,8 +200,7 @@ class UnconnectedAddRecipeForm extends Component {
 }
 
 const mapState = state => {
-  //categories:state.cats
-  return { categories: ["dinner", "breakfast", "dessert"] };
+  return { categories: state.recCats };
 };
 const AddRecipeForm = connect(mapState)(UnconnectedAddRecipeForm);
 

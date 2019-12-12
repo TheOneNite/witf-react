@@ -1,18 +1,15 @@
-var WebSocketServer = require('ws').Server,
-    wss = new WebSocketServer({ port: 40510 })
-wlist = []
-wss.on('connection', function (ws) {
-    wlist.push(ws)
-    ws.send(``)
-})
+var WebSocketServer = require("ws").Server,
+  wss = new WebSocketServer({ port: 40510 });
+wlist = [];
+wss.on("connection", function(ws) {
+  wlist.push(ws);
+  ws.send(``);
+});
 
+const { spawn } = require("child_process");
+const chokidar = require("chokidar");
 
-const { spawn } = require('child_process');
-const chokidar = require('chokidar');
-
-
-let pollServer =
-    ` 
+let pollServer = ` 
     let __init_status = false
 
     let __init_magic_reload = async () => {
@@ -61,35 +58,36 @@ let pollServer =
         }
     }
     
-    __init_magic_reload()
-`
+    //__init_magic_reload()
+`;
 
-
-chokidar.watch(__dirname + '/build', { ignored: /(^|[\/\\])\../ }).on('all', (event, path) => {
-    webpackError = undefined
+chokidar
+  .watch(__dirname + "/build", { ignored: /(^|[\/\\])\../ })
+  .on("all", (event, path) => {
+    webpackError = undefined;
     while (wlist.length > 0) {
-        try { wlist.pop().send(``) } catch (err) { }
+      try {
+        wlist.pop().send(``);
+      } catch (err) {}
     }
+  });
+
+let webpackError = undefined;
+
+const cmd = /^win/.test(process.platform) ? "npx.cmd" : "npx";
+let webpack = spawn(cmd, ["webpack", "--watch", "--display", "errors-only"]);
+webpack.stdout.on("data", data => {
+  webpackError = data.toString();
+  console.log("error found");
 });
 
-
-let webpackError = undefined
-
-
-const cmd = /^win/.test(process.platform) ? 'npx.cmd' : 'npx'
-let webpack = spawn(cmd, ['webpack', '--watch', '--display', 'errors-only'])
-webpack.stdout.on('data', data => {
-    webpackError = data.toString()
-    console.log('error found')
-})
-
-
 module.exports = app => {
-    app.all('/*', (req, res, next) => {
-        if (webpackError) {
-            // If there's an error, display it
-            res.send('<pre>' + webpackError + '</pre><script>' + pollServer + '</script>')
-        } else next()
-    })
-
-}
+  app.all("/*", (req, res, next) => {
+    if (webpackError) {
+      // If there's an error, display it
+      res.send(
+        "<pre>" + webpackError + "</pre><script>" + pollServer + "</script>"
+      );
+    } else next();
+  });
+};

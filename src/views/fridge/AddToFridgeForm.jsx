@@ -42,36 +42,40 @@ class UnconnectedAddToFridgeForm extends Component {
   };
   render = () => {
     return (
-      <div>
-        <form>
+      <form>
+        <div className="wrapper-food-form">
           <div>
-            <input
-              type="text"
-              placeholder="Item Name"
-              name="name"
-              onChange={this.handleInput}
-              className="input-base"
-            />
+            <div>
+              <input
+                type="text"
+                placeholder="Item Name"
+                name="name"
+                onChange={this.handleInput}
+                className="input-food"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="amount"
+                name="qty"
+                onChange={this.handleInput}
+                className="input-food"
+              />
+              <input
+                type="text"
+                placeholder="units"
+                name="units"
+                onChange={this.handleInput}
+                className="input-food"
+              />
+            </div>
           </div>
-          <div>
-            <input
-              type="text"
-              placeholder="amount"
-              name="qty"
-              onChange={this.handleInput}
-              className="input-base"
-            />
-            <input
-              type="text"
-              placeholder="units"
-              name="units"
-              onChange={this.handleInput}
-              className="input-base"
-            />
-          </div>
-          <button onClick={this.handleSubmit}>Add</button>
-        </form>
-      </div>
+          <button onClick={this.handleSubmit} className="button-base">
+            Add
+          </button>
+        </div>
+      </form>
     );
   };
 }

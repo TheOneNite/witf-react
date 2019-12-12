@@ -45,7 +45,7 @@ class UnconnectedLogin extends Component {
     }
     this.autologin();
     return (
-      <div>
+      <div className="wrapper-auth">
         Login
         {this.state.message && <div>{this.state.message}</div>}
         <form onSubmit={this.submitHandler}>
@@ -56,16 +56,17 @@ class UnconnectedLogin extends Component {
               name="username"
               onChange={this.inputHandler}
               value={this.state.username}
-              className="text-box"
+              className="input-auth"
             />
             <input
               type="password"
               placeholder="password"
               name="password"
+              className="input-auth"
               onChange={this.inputHandler}
               value={this.state.password}
             />
-            <button className="button-style">Log In</button>
+            <button className="button-auth">Log In</button>
           </div>
         </form>
         <Link to="/signup">Create an Account</Link>

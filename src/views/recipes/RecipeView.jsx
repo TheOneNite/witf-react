@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import RecipeIngredient from "./RecipeIngredient.jsx";
 import { loadFridge } from "../../scripts/networkActions.js";
+import Loader from "../../assets/loader.jsx";
 
 class UnconnectedRecipeView extends Component {
   constructor(props) {
@@ -58,7 +59,9 @@ class UnconnectedRecipeView extends Component {
       }
       this.loadRec(this.props.viewId);
       return (
-        <div className="wrapper-recipe-content item-subheader">Loading...</div>
+        <div className="wrapper-recipe-content item-subheader">
+          <Loader />
+        </div>
       );
     }
     let recipe = this.props.activeRec;
@@ -67,22 +70,25 @@ class UnconnectedRecipeView extends Component {
       <div>
         <div className="item-header">{recipe.title}</div>
         <div className="wrapper-recipe-content">
-          <div className="item-subheader">Ingredients</div>
-          <button
-            className="button-recipe-add"
-            onClick={this.buyIngs}
-            name="false"
-          >
-            Add All to List
-          </button>
-          <button
-            className="button-recipe-add"
-            onClick={this.buyIngs}
-            name="true"
-          >
-            Add Missing to List
-          </button>
-          <div>{recipe.ingredients.map(this.renderIngredients)}</div>
+          <div className="wrapper-recipe-contentheader">
+            <div className="item-subheader">Ingredients</div>
+            <button
+              className="button-recipe-add"
+              onClick={this.buyIngs}
+              name="false"
+            >
+              Add All to List
+            </button>
+            <button
+              className="button-recipe-add"
+              onClick={this.buyIngs}
+              name="true"
+            >
+              Add Missing to List
+            </button>
+            <button className="button-recipe-add">Cook</button>
+            <div>{recipe.ingredients.map(this.renderIngredients)}</div>
+          </div>
           {recipe.method && (
             <>
               <div className="item-subheader">Method:</div>

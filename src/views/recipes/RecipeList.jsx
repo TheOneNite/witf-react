@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Loader from "../../assets/loader.jsx";
 
 class UnconnectedRecipeList extends Component {
   constructor(props) {
@@ -17,6 +18,18 @@ class UnconnectedRecipeList extends Component {
       rec = recResult[0];
     }
     this.props.dispatch({ type: "loadRecipe", recData: rec });
+  };
+  loadCats = async () => {
+    const res = await fetch("/rec-cats", { credentials: "include" });
+    let bod = await res.text();
+    bod = JSON.parse(bod);
+    console.log(bod);
+    if (bod.success) {
+      this.props.dispatch({ type: "loadRecCats", cats: bod.cats });
+      return;
+    }
+    console.log(bod);
+    alert(bod.msg);
   };
   loadLibrary = async () => {
     const res = await fetch("/rec-library", { credentials: "include" });
@@ -61,7 +74,7 @@ class UnconnectedRecipeList extends Component {
       <select
         onChange={this.dropdownHandler}
         value={this.state.mealFilter}
-        className="dropdown-base"
+        className="dropdown-recipe-list"
       >
         <option>None</option>
         {this.props.categories.map(catName => {
@@ -72,11 +85,11 @@ class UnconnectedRecipeList extends Component {
   };
   renderRecipe = recData => {
     return (
-      <Link to={"/recipes/" + recData.id} className="recipe-list-link">
-        <button name={recData.id} className="recipe-list-item">
+      <div name={recData.id} className="recipe-list-item">
+        <Link to={"/recipes/" + recData.id} className="recipe-list-link">
           {recData.title}
-        </button>
-      </Link>
+        </Link>
+      </div>
     );
   };
   renderCategory = categoryName => {
@@ -103,7 +116,21 @@ class UnconnectedRecipeList extends Component {
       return (
         <div className="wrapper-recipe-picker">
           <div className="wrapper-recipe-search">
-            <div>Loading...</div>
+            <div>
+              <Loader />
+            </div>
+          </div>
+        </div>
+      );
+    }
+    if (this.props.categories === undefined) {
+      this.loadCats();
+      return (
+        <div className="wrapper-recipe-picker">
+          <div className="wrapper-recipe-search">
+            <div>
+              <Loader />
+            </div>
           </div>
         </div>
       );
@@ -111,15 +138,13 @@ class UnconnectedRecipeList extends Component {
     return (
       <div className="wrapper-recipe-picker">
         <div className="wrapper-recipe-search">
-          <div>
-            <input
-              type="text"
-              onChange={this.searchHandler}
-              value={this.state.searchQ}
-              placeholder="Search"
-              className="input-recipe"
-            />
-          </div>
+          <input
+            type="text"
+            onChange={this.searchHandler}
+            value={this.state.searchQ}
+            placeholder="Search"
+            className="input-recipe"
+          />
           <div>
             <div className="recipe-search-header">Filter by category:</div>
             <div>{this.renderDropdown()}</div>

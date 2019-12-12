@@ -25,7 +25,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <BrowserRouter>
-          <div>
+          <div className="wrapper-app">
             <NavBar />
             <Route exact={true} path="/" component={Login} />
             <Route exact={true} path="/signup" component={Signup} />
