@@ -76,7 +76,7 @@ class UnconnectedUnknownToolTip extends Component {
             placeholder="search"
             className="input-search-warn"
           />
-          <Link className="link-warning" to="/">
+          <Link className="link-warning" to="/add" target="_blank">
             Tell us about it
           </Link>
         </div>

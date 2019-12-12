@@ -616,6 +616,7 @@ app.post("/recipt-ocr", upload.single("img"), (req, res) => {
     });
   });
 });
+//User library interaction endpoints----------------------------------------------------------------------
 app.get("/search-lib", async (req, res) => {
   console.log("GET /search-lib");
   console.log(req.query.searchQ);
@@ -628,7 +629,7 @@ app.post("/library-choice", upload.none(), (req, res) => {
   let foodId = req.body.foodId;
   let nameWords = req.body.newName.split(" ");
   nameWords = nameWords.filter(word => {
-    return length > 0;
+    return word.length > 0;
   });
   let newName = nameWords.join(" ");
   newName = newName.toLowerCase();
@@ -650,6 +651,39 @@ app.post("/library-choice", upload.none(), (req, res) => {
           console.log(err);
         }
       });
+  });
+});
+app.post("/library-add", upload.single("img"), async (req, res) => {
+  console.log("POST /library-add");
+  console.log(req.file);
+  let name = req.body.name;
+  let libResult = await libTools.libLookup(name, mongoDb);
+  if (libResult) {
+    console.log("item addition matched item in lib");
+    return;
+  }
+  let imgPath = req.file.path;
+  let imgExt = "." + req.file.originalname.split(".").pop();
+  let nameWords = name.split(" ");
+  let imgName = [];
+  if (nameWords.length > 1) {
+    for (let i = 0; i < nameWords.length; i++) {
+      let word = nameWords[i];
+      if (i > 0) {
+        imgName.push(
+          word.slice(0, 1).toUpperCase() + word.slice(1, word.length)
+        );
+      } else {
+        imgName.push(word);
+      }
+    }
+  }
+  let finalFile = imgName.join("");
+  finalFile = finalFile + imgExt;
+  let fullPath = __dirname + "/public/foodAssets/" + finalFile;
+  fs.rename(imgPath, fullPath, () => {
+    console.log("image file moved to assets");
+    libTools.updateLibrary(mongoDb, fs);
   });
 });
 // Fridge content endpoints --------------------------------------------------------------------------

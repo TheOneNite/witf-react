@@ -14,6 +14,7 @@ import NavBar from "./views/navbar/NavBar.jsx";
 import List from "./views/list/List.jsx";
 import Recipes from "./views/recipes/Recipes.jsx";
 import Settings from "./views/Account/Settings.jsx";
+import AddToLibrary from "./AddToLibrary.jsx";
 
 class App extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class App extends Component {
             <Route exact={true} path="/recipes/" component={Recipes} />
             <Route exact={true} path="/recipes/:route" component={Recipes} />
             <Route exact={true} path="/settings" component={Settings} />
+            <Route exact={true} path="/add" component={AddToLibrary} />
           </div>
         </BrowserRouter>
       </Provider>

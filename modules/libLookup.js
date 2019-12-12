@@ -1,3 +1,4 @@
+const tools = require("../backend/utilites/tools.js");
 const libLookup = (itemName, mongoDb) => {
   const iterateSearch = async wordArr => {
     console.log("searching advanced");
@@ -58,11 +59,12 @@ const libLookup = (itemName, mongoDb) => {
       .collection("lib")
       .find({ names: longStr })
       .toArray((err, result) => {
-        console.log(longStr + " results " + result);
+        console.log(longStr + " results ");
+        console.log(result);
         if (err) {
           console.log(err);
         }
-        if (result.length === 1) {
+        if (result.length >= 1) {
           resolve(result[0]);
         }
         let fullSearch = result;
@@ -157,4 +159,65 @@ const libLookup = (itemName, mongoDb) => {
   return searchRes;
 };
 
-module.exports = { libLookup };
+const updateLibrary = (mongoDb, fs) => {
+  fs.readdir("./public/foodAssets", (err, files) => {
+    if (err) {
+      throw err;
+    }
+    console.log(files);
+    const imgFiles = files;
+    mongoDb
+      .collection("lib")
+      .find({})
+      .toArray((err, libItems) => {
+        if (err) {
+          console.log(err);
+          throw err;
+        }
+        let oldImgs = libItems.map(libItem => {
+          return libItem.imgPath;
+        });
+        let newImgs = imgFiles.filter(filePath => {
+          if (oldImgs.includes(filePath)) {
+            return false;
+          }
+          return true;
+        });
+        newImgs.forEach(filePath => {
+          let itemName = filePath.split(".").shift();
+          let itemNames = [itemName];
+          let multiword = [];
+          let wordStart = 0;
+          for (let i = 0; i < itemName.length; i++) {
+            let char = itemName[i];
+            if (char.toUpperCase() === char) {
+              multiword.push(itemName.slice(wordStart, i));
+              wordStart = i;
+            }
+          }
+          if (multiword.length > 0) {
+            itemNames.push(multiword.join(" "));
+            let lastWord = multiword.pop();
+            multiword.push(lastWord + "s");
+            itemNames.push(multiword.join(" "));
+          }
+          itemNames.push(itemName + "s");
+          mongoDb.collection("lib").insertOne(
+            {
+              foodId: tools.generateId(10),
+              imgPath: filePath,
+              names: itemNames
+            },
+            (err, result) => {
+              if (err) {
+                throw err;
+              }
+              console.log(itemName + " successfully added to db");
+            }
+          );
+        });
+      });
+  });
+};
+
+module.exports = { libLookup, updateLibrary };

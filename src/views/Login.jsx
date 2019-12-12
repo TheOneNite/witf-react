@@ -30,6 +30,7 @@ class UnconnectedLogin extends Component {
     console.log(bod);
     bod = JSON.parse(bod);
     if (bod.success) {
+      console.log("autolog success");
       this.props.dispatch({ type: "login" });
       return;
     }
@@ -40,7 +41,8 @@ class UnconnectedLogin extends Component {
     return false;
   };
   render = () => {
-    if (this.props.loggedIn) {
+    if (this.props.loggedin) {
+      console.log("redir");
       return <Redirect to="/fridge" />;
     }
     this.autologin();

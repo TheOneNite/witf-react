@@ -5,7 +5,7 @@ import AddToFridgeForm from "./AddToFridgeForm.jsx";
 class UnconnectedFridgeAction extends Component {
   constructor(props) {
     super(props);
-    this.state = { addItem: true };
+    this.state = { addItem: false };
   }
   toggleAdd = event => {
     this.setState({ addItem: !this.state.addItem });
