@@ -599,6 +599,7 @@ app.post("/recipt-ocr", upload.single("img"), (req, res) => {
       Promise.all(
         items.map(async item => {
           let picture = await libTools.libLookup(item.name, mongoDb);
+          console.log(picture);
           if (picture) {
             item.known = true;
             item.foodId = picture.foodId;
@@ -613,6 +614,42 @@ app.post("/recipt-ocr", upload.single("img"), (req, res) => {
         res.send(JSON.stringify(items));
       });
     });
+  });
+});
+app.get("/search-lib", async (req, res) => {
+  console.log("GET /search-lib");
+  console.log(req.query.searchQ);
+  let result = await libTools.libLookup(req.query.searchQ, mongoDb);
+  res.send(JSON.stringify(result));
+});
+app.post("/library-choice", upload.none(), (req, res) => {
+  console.log("POST: /library-choice");
+  console.log(req.body);
+  let foodId = req.body.foodId;
+  let nameWords = req.body.newName.split(" ");
+  nameWords = nameWords.filter(word => {
+    return length > 0;
+  });
+  let newName = nameWords.join(" ");
+  newName = newName.toLowerCase();
+  mongoDb.collection("lib").findOne({ foodId }, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    if (result === null) {
+      console.log("couldnt find item " + foodId);
+      return;
+    }
+    console.log("adding " + newName + " to name list for " + foodId);
+    let names = result.names;
+    names.push(newName);
+    mongoDb
+      .collection("lib")
+      .updateOne({ foodId }, { $set: { names } }, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+      });
   });
 });
 // Fridge content endpoints --------------------------------------------------------------------------
@@ -888,62 +925,6 @@ app.get("/fetch-pantry", (req, res) => {
           res.send(JSON.stringify({ success: true, data: fridge }));
         });
     });
-});
-app.post("/delete", upload.none(), (req, res) => {
-  let target = req.body.cont;
-  let item = req.body.item;
-  console.log("removing" + item + "from " + target);
-  if (target === "fridge") {
-    fridge[item] = undefined;
-  }
-  if (target === "shop") {
-    shoppingList[item] = undefined;
-  }
-  res.send(JSON.stringify({ success: true }));
-});
-
-app.get("/ocr", async (req, res) => {
-  let time = new Date().getTime();
-  let testFile = [];
-  await fs.readFile("./testSet.json", "utf8", (err, data) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log("file opened, took " + (new Date().getTime() - time) + "ms");
-    let testSet = JSON.parse(data);
-    testSet.forEach(processScan);
-  });
-  //console.log(testFile);
-});
-
-app.get("/ocr-test", async (req, res) => {
-  let testSet = [];
-  let testImgs = [__dirname + "/uploads/skills.png"];
-  /*for (let i = 0; i < 1; i++) {
-    testImgs.push(__dirname + "/uploads/test" + i + ".jpg");
-  }*/
-  testSet = await Promise.all(
-    testImgs.map(async imgFile => {
-      console.log(imgFile.split("/") + " send");
-      let time = new Date().getTime();
-      let scanResult = await client.textDetection(imgFile);
-      console.log(imgFile + " returned");
-      console.log("response time: " + (new Date().getTime() - time));
-      let detections = scanResult.map(result => {
-        return result.fullTextAnnotation;
-      });
-      let lines = detections[0].text.split("\n");
-      console.log(lines);
-      return lines;
-    })
-  );
-  let testSetJSON = JSON.stringify(testSet);
-  fs.writeFile("./testSet.json", testSetJSON, err => {
-    if (err) {
-      console.log(err);
-    }
-    console.log("file written");
-  });
 });
 // RECPIE SYSTEM ENDPOINTS ---------------------------------------------------------------------------
 app.get("/get-recipe", (req, res) => {

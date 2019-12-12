@@ -51,11 +51,12 @@ const libLookup = (itemName, mongoDb) => {
   words = words.map(word => {
     return word.toLowerCase();
   });
+  console.log(words);
   let longStr = words.join("");
   let searchRes = new Promise((resolve, reject) => {
     mongoDb
       .collection("lib")
-      .find({ names: longStr.toLowerCase() })
+      .find({ names: longStr })
       .toArray((err, result) => {
         console.log(longStr + " results " + result);
         if (err) {

@@ -3,11 +3,45 @@ import { connect } from "react-redux";
 import ScanItem from "./ScanItem.jsx";
 import { Redirect } from "react-router-dom";
 import { loadFridge } from "../../scripts/networkActions.js";
+import Loader from "../../assets/loader.jsx";
 
 class UnconnectedReciptScanner extends Component {
   constructor(props) {
     super(props);
-    this.state = { status: "none" };
+    this.state = {
+      status: "none",
+      parsedItems: [
+        {
+          name: "VIURA AIREN VERDEJO ",
+          qty: 750,
+          unit: "ML",
+          known: false,
+          id: "lcwtrnoz"
+        },
+        {
+          name: "TOMATE AXIANY ",
+          qty: 255,
+          unit: "GR",
+          known: false,
+          id: "vsioljfz"
+        },
+        { name: "BASILIC ", qty: 1, unit: "UN", known: false, id: "oymekxha" },
+        {
+          name: "* FILET DE MORUE FRAICHE ",
+          qty: 1,
+          unit: "KG",
+          known: false,
+          id: "qovuhvkr"
+        },
+        {
+          name: "* FILET DE MORUE FRAICHE ",
+          qty: 1,
+          unit: "KG",
+          known: false,
+          id: "hlgrqvid"
+        }
+      ]
+    };
   }
   submitHandler = async event => {
     console.log("recipt submitted");
@@ -50,6 +84,24 @@ class UnconnectedReciptScanner extends Component {
     alert("Error adding recipt scan to fridge");
     this.setState({ status: "returned" });
   };
+  idItem = (itemId, foodId) => {
+    console.log("submitted id for " + itemId);
+    let items = this.state.parsedItems;
+    let newItems = undefined;
+    for (let i = 0; i < items.length; i++) {
+      console.log(items[i].id);
+      if (items[i].id === itemId) {
+        newItems = items.slice(0, i);
+        let editItem = items[i];
+        editItem.known = true;
+        editItem.foodId = foodId;
+        newItems.push(editItem);
+        newItems = newItems.concat(items.slice(i + 1, items.length));
+        break;
+      }
+    }
+    this.setState({ parsedItems: newItems });
+  };
   renderItemList = () => {
     return (
       <div className="list-container">
@@ -59,6 +111,7 @@ class UnconnectedReciptScanner extends Component {
               data={itemData}
               edit={this.editItem}
               delete={this.deleteItem}
+              itemId={this.idItem}
             />
           );
         })}
@@ -88,7 +141,7 @@ class UnconnectedReciptScanner extends Component {
     this.setState({ parsedItems: list });
   };
   cancelUpload = event => {
-    console.log("cancle");
+    console.log("cancel");
     this.props.dispatch({ type: "cancelImg" });
   };
   render = () => {
@@ -111,7 +164,7 @@ class UnconnectedReciptScanner extends Component {
       );
     }
     if (this.state.status === "uploading") {
-      return <div>Loading...</div>;
+      return <Loader />;
     }
     if (
       this.state.status === "returned" ||

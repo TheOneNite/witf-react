@@ -10,6 +10,12 @@ a {
 body {
   margin: 0px;
 }
+button {
+  font-family: inherit;
+}
+input {
+  font-family: inherit;
+}
 .bg {
   width: 100%;
   margin: 0px;
@@ -64,6 +70,12 @@ body {
 .nav-link:hover {
   border-bottom: 2px solid #7ec484;
 }
+.link-warning {
+  color: #25344f;
+  font-size: 18px;
+  margin-left: 10px;
+  width: 50%;
+}
 .overlay {
   z-index: 50;
   position: fixed;
@@ -113,6 +125,9 @@ body {
   max-height: 33vw;
   z-index: 1;
   border: 1px solid #25344f;
+}
+.wrapper-tooltip-warn {
+  font-size: 18px;
 }
 .wrapper-item-detail {
   position: absolute;
@@ -468,6 +483,12 @@ body {
   width: 100%;
   z-index: 2;
 }
+.img-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  margin-right: 10px;
+}
 .overlay-expiry {
   background-color: rgba(214, 202, 73, 0.8);
   color: rgba(0, 0, 0, 1);
@@ -483,6 +504,16 @@ body {
   font-weight: bolder;
   text-align: center;
   box-sizing: border-box;
+}
+.button-id-food {
+  border: none;
+  background-color: inherit;
+  width: 100%;
+  font-size: 24px;
+  text-anchor: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .button-auth {
   margin-top: 20px;
@@ -603,6 +634,15 @@ body {
   color: #f9f9f9;
   border: 2px solid #7e7676;
 }
+.input-search-warn {
+  background-color: #d6ca49;
+  font-size: 18px;
+  color: black;
+  border: 2px solid black;
+  padding: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
 .input-list {
   padding: 5px;
   box-sizing: border-box;
@@ -637,15 +677,19 @@ body {
   margin-right: 5px;
 }
 .button-warn {
+  height: 100%;
   border: none;
-  width: 32px;
+  width: max-content;
   background-color: #d6ca49;
   padding: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
   text-align: center;
   text-justify: center;
   font-stretch: expanded;
   font-weight: bolder;
   font-size: 28px;
+  margin-right: 10px;
 }
 .button-delete {
   box-sizing: border-box;

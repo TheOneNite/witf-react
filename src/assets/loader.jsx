@@ -5,7 +5,7 @@ class Loader extends Component {
     let weight = this.props.weight;
     let size = this.props.size;
     if (this.props.size === undefined) {
-      let size = 32;
+      size = 32;
     }
     if (this.props.weight === undefined) {
       weight = 8;

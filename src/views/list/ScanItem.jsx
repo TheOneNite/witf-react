@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadList } from "../../scripts/networkActions.js";
 import AddToListForm from "./AddToListForm.jsx";
+import UnknownToolTip from "./UnknownToolTip.jsx";
 
 class UnconnectedScanItem extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class UnconnectedScanItem extends Component {
       editing: false,
       name: this.props.data.name,
       qty: this.props.data.qty,
-      unit: this.props.data.unit
+      unit: this.props.data.unit,
+      viewWarn: true
     };
   }
   handleInput = event => {
@@ -38,12 +40,21 @@ class UnconnectedScanItem extends Component {
   removeItem = () => {
     this.props.delete(this.props.data);
   };
-
+  setId = foodId => {
+    //console.log("itemId", this.props.data.id);
+    //console.log("foodId", foodId);
+    this.props.itemId(this.props.data.id, foodId);
+  };
   renderDetails = () => {
     if (this.state.editing) {
       return (
         <div>
-          {!this.props.data.known && <button className="button-warn">!</button>}
+          {(!this.props.data.known || this.state.known) && (
+            <UnknownToolTip
+              baseName={this.props.data.name}
+              setId={this.setId}
+            />
+          )}
           <form>
             <div className="wrapper-edit-item">
               <input
@@ -78,7 +89,9 @@ class UnconnectedScanItem extends Component {
     }
     return (
       <div className="list-style">
-        {!this.props.data.known && <button className="button-warn">!</button>}
+        {!this.props.data.known && (
+          <UnknownToolTip baseName={this.props.data.name} setId={this.setId} />
+        )}
         {this.props.data.name}
         {this.props.data.qty > 1 && ": " + this.props.data.qty}
         {this.props.data.unit && " " + this.props.data.unit}
@@ -86,6 +99,7 @@ class UnconnectedScanItem extends Component {
     );
   };
   render = () => {
+    console.log(this.props.data);
     if (this.state.selected) {
       return (
         <div className="list-wrapper" onMouseLeave={this.setFocus}>

@@ -71,6 +71,7 @@ class UnconnectedFridge extends Component {
 const mapState = state => {
   return {
     contents: state.list,
+    //imgMode: true
     imgMode: state.listUpload
   };
 };

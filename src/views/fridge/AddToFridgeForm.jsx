@@ -36,6 +36,7 @@ class UnconnectedAddToFridgeForm extends Component {
       let newFridge = await loadFridge();
       if (newFridge.success) {
         this.props.dispatch({ type: "openFridge", fridge: newFridge.data });
+        return;
       }
     }
     alert("error adding item to fridge");
