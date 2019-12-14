@@ -7,7 +7,7 @@ import EatFoodForm from "./EatFoodForm.jsx";
 class UnconnectedFridgeItem extends Component {
   constructor(props) {
     super(props);
-    this.state = { selected: true, eatForm: true, notify: false };
+    this.state = { selected: false, eatForm: false, notify: false };
   }
   toggleSelect = () => {
     this.setState({ selected: !this.state.selected });
