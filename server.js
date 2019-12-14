@@ -10,12 +10,14 @@ const auth = require("password-hash");
 const cookieParser = require("cookie-parser");
 const reloadMagic = require("./reload-magic.js");
 const vision = require("@google-cloud/vision");
-const projectID = "witf-257419";
-//const keyPath = "__dirname + "\\cloudVision\\witf-52d1a1543c18.json";"
-const cvAuthDir =
-  "export GOOGLE_APPLICATION_CREDENTIALS='C:/Users/travi/decode/witf/react-app/cloudVision/witf-257419-340fa03fa322.json'";
-//console.log(keyPath);
-const client = new vision.ImageAnnotatorClient();
+//const keyFilename =
+//"C:\\Users\\travi\\decode\\witf\\secure\\witf-257419-120e447dee16.json"; //dev key
+const keyFilename = "/root/witf/secure/witf-257419-120e447dee16.json"; //prod key
+const visionConfig = {
+  projectId: "witf-257419",
+  keyFilename
+};
+const client = new vision.ImageAnnotatorClient(visionConfig);
 
 const MongoClient = require("mongodb").MongoClient;
 const dbLogin = require("./backend/utilites/databaseURL.js");
@@ -347,6 +349,18 @@ app.post("/signup", upload.none(), (req, res) => {
           res.cookie("sid", sid);
           res.send(JSON.stringify({ success: true }));
         });
+    });
+});
+app.get("/logout", (req, res) => {
+  console.log("GET /logout");
+  mongoDb
+    .collection("sessions")
+    .deleteOne({ sid: req.cookies.sid }, (err, result) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      res.redirect("/");
     });
 });
 app.get("/autologin", (req, res) => {

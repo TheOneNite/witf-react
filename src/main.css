@@ -539,12 +539,12 @@ input {
   width: 100%;
 }
 .button-action {
-  color: whitesmoke;
+  padding: 0px;
+  color: #f9f9f9;
   background-color: #25344f;
   border: none;
   opacity: 80%;
   z-index: 4;
-  vertical-align: middle;
 }
 .button-action:hover {
   background-color: #7e7676;
@@ -603,7 +603,7 @@ input {
 }
 .list-wrapper {
   box-sizing: border-box;
-  display: flex;
+
   width: 100%;
   background-color: #25344f;
   color: #f9f9f9;
@@ -646,7 +646,7 @@ input {
   height: 100%;
 }
 .button-list {
-  width: auto;
+  width: 100%;
   box-sizing: border-box;
   background-color: #1a9c1a;
   color: #25344f;
@@ -659,7 +659,7 @@ input {
 }
 .button-edit {
   border: none;
-  width: 32px;
+  width: 100%;
   background-color: #d6ca49;
   padding: 5px;
   text-align: center;
@@ -685,6 +685,7 @@ input {
   margin-right: 10px;
 }
 .button-delete {
+  width: 100%;
   box-sizing: border-box;
   background-color: #d53529;
   color: #25344f;
@@ -1325,7 +1326,7 @@ div {
   .list-container {
     box-sizing: border-box;
     width: max-content;
-    display: flex;
+
     flex-direction: column;
   }
   .list-wrapper {

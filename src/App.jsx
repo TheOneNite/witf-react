@@ -2,11 +2,6 @@ import React, { Component } from "react";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store.js";
-//import MainMenu from "./MainMenu.jsx";
-//import ContentWrapper from "./Content.jsx";
-import { MenuButton, PurchaseButton } from "./Buttons.jsx";
-import ShoppingForm from "./ShoppingForm.jsx";
-
 import Signup from "./views/Signup.jsx";
 import Login from "./views/Login.jsx";
 import Fridge from "./views/fridge/Fridge.jsx";
