@@ -10,6 +10,7 @@ import List from "./views/list/List.jsx";
 import Recipes from "./views/recipes/Recipes.jsx";
 import Settings from "./views/Account/Settings.jsx";
 import AddToLibrary from "./AddToLibrary.jsx";
+import Landing from "./Landing.jsx";
 
 class App extends Component {
   constructor(props) {
@@ -22,8 +23,8 @@ class App extends Component {
       <Provider store={store}>
         <BrowserRouter>
           <div className="wrapper-app">
+            <Route exact={true} path="/" component={Landing} />
             <NavBar />
-            <Route exact={true} path="/" component={Login} />
             <Route exact={true} path="/signup" component={Signup} />
             <Route exact={true} path="/login" component={Login} />
             <Route exact={true} path="/fridge" component={Fridge} />

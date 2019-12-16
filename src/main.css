@@ -997,6 +997,24 @@ div {
     margin-right: auto;
     margin-left: auto;
   }
+  .wrapper-video-land {
+    box-sizing: border-box;
+    width: 100vw;
+    height: 500vh;
+    text-align: center;
+  }
+  .video-land {
+    width: 100vw;
+    top: 1px;
+    position: sticky;
+  }
+  .link-landing {
+    position: sticky;
+    top: 5px;
+    font-size: 48px;
+    text-align: center;
+    z-index: 10;
+  }
   .recipe-ingredient {
     color: #f9f9f9;
     border-top: 1px solid #7e7676;
