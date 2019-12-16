@@ -5,8 +5,8 @@ class RecipeIngredient extends Component {
     return (
       <div className="recipe-ingredient">
         {this.props.ingData.qty}
-        {this.props.ingData.unit && " " + this.props.ingData.unit + " "}
-        {this.props.ingData.name}
+        {this.props.ingData.unit && " " + this.props.ingData.unit}
+        {" " + this.props.ingData.name}
       </div>
     );
   };

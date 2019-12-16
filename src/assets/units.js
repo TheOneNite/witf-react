@@ -13,6 +13,8 @@ const units = [
   "bunch",
   "clove",
   "cloves of",
-  "stick"
+  "stick",
+  "teaspoon",
+  "tablespoon"
 ];
 export default units;

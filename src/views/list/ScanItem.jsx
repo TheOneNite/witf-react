@@ -99,7 +99,7 @@ class UnconnectedScanItem extends Component {
     );
   };
   render = () => {
-    console.log(this.props.data);
+    //console.log(this.props.data);
     if (this.state.selected) {
       return (
         <div className="list-wrapper" onMouseLeave={this.setFocus}>

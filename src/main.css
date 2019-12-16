@@ -10,6 +10,9 @@ button {
 input {
   font-family: inherit;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 .bg {
   width: 100%;
   margin: 0px;
@@ -34,12 +37,6 @@ input {
   z-index: 0;
   padding: 0px;
   overflow-y: auto;
-}
-.button-style {
-  margin: 1px;
-  border: 2px solid #7ec484;
-  color: #25344f;
-  background-color: #7e7676;
 }
 .nav-link {
   width: 100%;
@@ -69,39 +66,6 @@ input {
   font-size: 18px;
   margin-left: 10px;
   width: 50%;
-}
-.overlay {
-  z-index: 50;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.popup {
-  z-index: 100;
-  position: fixed;
-  top: 200px;
-  left: 200px;
-  right: 200px;
-  background-color: white;
-}
-.shop-form-style {
-  display: flex;
-  height: 100%;
-}
-.shop-input-style {
-  display: flex;
-  flex-direction: column;
-}
-.text-box {
-  background-color: #7e7676;
-  border: 2px groove #7ec484;
-  color: #25344f;
-  box-sizing: border-box;
-  margin: 0px;
-  height: 50%;
 }
 .container-recipe-form {
   display: flex;
@@ -299,7 +263,7 @@ input {
   margin-left: auto;
 }
 .recipe-ingredient {
-  color: #7e7676;
+  color: #f9f9f9;
   border-top: 1px solid #7e7676;
   margin: 5px;
   padding: 5px;
@@ -737,6 +701,9 @@ div {
   input {
     font-family: inherit;
   }
+  p {
+    color: #f9f9f9;
+  }
   .bg {
     width: 100%;
     margin: 0px;
@@ -958,8 +925,10 @@ div {
     flex-direction: column;
   }
   .wrapper-button-action {
+    box-sizing: border-box;
     display: flex;
     margin: 10px 0px 10px 0px;
+    max-width: 100vw;
   }
   .wrapper-recipe-form {
     display: flex;
@@ -1029,7 +998,7 @@ div {
     margin-left: auto;
   }
   .recipe-ingredient {
-    color: #7e7676;
+    color: #f9f9f9;
     border-top: 1px solid #7e7676;
     margin: 5px;
     padding: 5px;
@@ -1296,7 +1265,7 @@ div {
   .button-recipe-add {
     box-sizing: border-box;
     background-color: #25344f;
-    color: #7e7676;
+    color: #f9f9f9;
     border: 1px solid #7e7676;
     padding: 10px;
     width: 100%;
@@ -1326,7 +1295,7 @@ div {
   .list-container {
     box-sizing: border-box;
     width: max-content;
-
+    display: flex;
     flex-direction: column;
   }
   .list-wrapper {
@@ -1415,13 +1384,14 @@ div {
   .button-delete {
     box-sizing: border-box;
     background-color: #d53529;
-    color: #25344f;
+    color: black;
     text-align: center;
     text-justify: center;
     font-stretch: expanded;
     border: none;
     font-weight: bolder;
     font-size: 28px;
+    width: min-content;
   }
   .icon-button {
     object-fit: cover;

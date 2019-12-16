@@ -7,7 +7,7 @@ import RecipeIngredient from "./RecipeIngredient.jsx";
 class UnconnectedAddRecipeForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { ingredients: [], manualMode: false };
+    this.state = { ingredients: [], manualMode: false, cat: "dinner" };
   }
   inputHandler = event => {
     this.setState({ [event.target.name]: event.target.value });

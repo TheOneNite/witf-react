@@ -80,6 +80,7 @@ class UnconnectedReciptScanner extends Component {
       //this.props.dispatch({ type: "openFridge", fridge: frgRes.data });
       //}
       this.setState({ status: "complete" });
+      return;
     }
     alert("Error adding recipt scan to fridge");
     this.setState({ status: "returned" });

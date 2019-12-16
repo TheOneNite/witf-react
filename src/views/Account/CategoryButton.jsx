@@ -63,13 +63,17 @@ class UnconnectedCategoryButton extends Component {
   };
   componentDidMount = () => {
     if (this.props.catName === "new") {
-      this.setState({ editing: true, adding: true });
+      this.setState({
+        editing: true,
+        adding: true,
+        catName: undefined
+      });
     }
   };
   render = () => {
     if (this.state.editing) {
       return (
-        <div className="button-base">
+        <div className="button-recipe-submit">
           <input
             type="text"
             onChange={this.handleInput}

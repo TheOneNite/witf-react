@@ -1,8 +1,10 @@
 const tools = require("../backend/utilites/tools.js");
 const libLookup = (itemName, mongoDb) => {
+  const trashWords = ["de"];
   const iterateSearch = async wordArr => {
     console.log("searching advanced");
     const search = keyword => {
+      keyword = new RegExp(keyword);
       let result = new Promise((resolve, reject) => {
         mongoDb
           .collection("lib")
@@ -36,12 +38,13 @@ const libLookup = (itemName, mongoDb) => {
         return result;
       })
     ).then(searchResult => {
+      //console.log(searchResult);
       searchResult.forEach(resultArr => {
         if (resultArr.length > 0) {
           result = result.concat(resultArr);
         }
       });
-      if (result.length === 1) {
+      if (result.length > 0) {
         return result;
       }
       return [];
@@ -54,20 +57,27 @@ const libLookup = (itemName, mongoDb) => {
   });
   console.log(words);
   let longStr = words.join("");
+  let searchStr = new RegExp(longStr);
   let searchRes = new Promise((resolve, reject) => {
     mongoDb
       .collection("lib")
-      .find({ names: longStr })
+      .find({ names: searchStr })
       .toArray((err, result) => {
         console.log(longStr + " results ");
         console.log(result);
         if (err) {
           console.log(err);
         }
-        if (result.length >= 1) {
-          resolve(result[0]);
+        if (result.length > 0) {
+          resolve(result);
         }
         let fullSearch = result;
+        words = words.filter(word => {
+          if (trashWords.includes(word)) {
+            return false;
+          }
+          return true;
+        });
         Promise.all(
           words.map(lookup => {
             let result = new Promise((resolve, reject) => {
@@ -124,6 +134,7 @@ const libLookup = (itemName, mongoDb) => {
             resolve(wordSearch[0]);
           }
           if (wordSearch.length > 1) {
+            return wordSearch;
             let longArr = undefined;
             let shortArr = undefined;
             if (wordSearch.length > fullSearch.length) {
@@ -147,8 +158,8 @@ const libLookup = (itemName, mongoDb) => {
             }
           }
           iterateSearch(words).then(advResult => {
-            if (advResult.length > 0) {
-              resolve(advResult[0]);
+            if (advResult.length > 1) {
+              resolve(advResult);
               return;
             }
             resolve(false);

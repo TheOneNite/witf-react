@@ -10,8 +10,8 @@ class UnconnectedEatFoodForm extends Component {
       slider: true,
       slideRatio: 0,
       eatUnit: "tsp",
-      finished: true,
-      buy: true
+      finished: false,
+      buy: false
     };
   }
   toggleView = event => {

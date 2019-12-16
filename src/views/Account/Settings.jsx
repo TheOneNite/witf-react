@@ -64,7 +64,7 @@ class UnconnectedSettings extends Component {
     return (
       <div>
         {this.props.categories.map(drawCategory)}
-        <button onClick={this.addCat} className="button-base">
+        <button onClick={this.addCat} className="button-recipe-parse">
           Add
         </button>
       </div>
@@ -82,8 +82,8 @@ class UnconnectedSettings extends Component {
     return (
       <div>
         <div className="list-wrapper">
+          <div className="item-subheader">Default Food Perish time:</div>
           <form onSubmit={this.submitExp}>
-            <div className="item-subheader">Default Food Perish time:</div>
             <input
               type="number"
               name="expDays"
@@ -95,7 +95,7 @@ class UnconnectedSettings extends Component {
           </form>
         </div>
         <div className="list-wrapper">
-          <div className="item-subheader">Recipe Categories</div>
+          <div className="item-subheader">Recipe Categories: </div>
           <div>{this.renderRecCats()}</div>
         </div>
       </div>

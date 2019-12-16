@@ -10,9 +10,9 @@ const auth = require("password-hash");
 const cookieParser = require("cookie-parser");
 const reloadMagic = require("./reload-magic.js");
 const vision = require("@google-cloud/vision");
-//const keyFilename =
-//"C:\\Users\\travi\\decode\\witf\\secure\\witf-257419-120e447dee16.json"; //dev key
-const keyFilename = "/root/witf/secure/witf-257419-120e447dee16.json"; //prod key
+const keyFilename =
+  "C:\\Users\\travi\\decode\\witf\\secure\\witf-257419-120e447dee16.json"; //dev key
+//const keyFilename = "/root/witf/secure/witf-257419-120e447dee16.json"; //prod key
 const visionConfig = {
   projectId: "witf-257419",
   keyFilename
@@ -96,13 +96,27 @@ let processScan = reciptArr => {
       return false;
     };
     let removeDeposit = item => {
-      if (item.includes("Dépôt bouteille")) {
-        return false;
+      const depositStrs = ["+Dépôt", "Dépôt bouteille"];
+      let pass = true;
+      for (let i = 0; i < depositStrs.length; i++) {
+        if (item.includes(depositStrs[i])) {
+          pass = false;
+          break;
+        }
       }
-      return true;
+      return pass;
+    };
+    const removeSpecChars = item => {
+      const specChars = ["$", "*"];
+      let words = item.split(" ");
+      words = words.filter(word => {
+        return !specChars.includes(word);
+      });
+      return words.join(" ");
     };
     recipt = recipt.filter(removePrices);
     recipt = recipt.filter(removeDeposit);
+    recipt = recipt.map(removeSpecChars);
     return recipt;
   };
   let itemStart = findStart(reciptArr) + 1;
@@ -360,7 +374,7 @@ app.get("/logout", (req, res) => {
         console.log(err);
         return;
       }
-      res.redirect("/");
+      res.redirect("/login");
     });
 });
 app.get("/autologin", (req, res) => {
@@ -476,6 +490,13 @@ app.post("/list", upload.none(), (req, res) => {
         if (err) {
           console.log(err);
         }
+        if (result === null) {
+          res.send(
+            JSON.stringify({ success: false, msg: "no fridge found for user" })
+          );
+          return;
+        }
+        let fridge = result.data;
         checkFridge(allItems, fridge);
         //allItems = checkFridge(allItems, fridge);
       });
@@ -610,10 +631,11 @@ app.post("/recipt-ocr", upload.single("img"), (req, res) => {
     let imgPath = req.file.path;
     scanRecipt(imgPath).then(scannedLines => {
       let items = processScan(scannedLines);
+      console.log("search for " + items.length + " items");
       Promise.all(
         items.map(async item => {
           let picture = await libTools.libLookup(item.name, mongoDb);
-          console.log(picture);
+          picture = picture[0];
           if (picture) {
             item.known = true;
             item.foodId = picture.foodId;
@@ -635,6 +657,8 @@ app.get("/search-lib", async (req, res) => {
   console.log("GET /search-lib");
   console.log(req.query.searchQ);
   let result = await libTools.libLookup(req.query.searchQ, mongoDb);
+  console.log("libsearch Result");
+  console.log(result);
   res.send(JSON.stringify(result));
 });
 app.post("/library-choice", upload.none(), (req, res) => {
