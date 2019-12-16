@@ -10,9 +10,9 @@ const auth = require("password-hash");
 const cookieParser = require("cookie-parser");
 const reloadMagic = require("./reload-magic.js");
 const vision = require("@google-cloud/vision");
-const keyFilename =
-  "C:\\Users\\travi\\decode\\witf\\secure\\witf-257419-120e447dee16.json"; //dev key
-//const keyFilename = "/root/witf/secure/witf-257419-120e447dee16.json"; //prod key
+//const keyFilename =
+//  "C:\\Users\\travi\\decode\\witf\\secure\\witf-257419-120e447dee16.json"; //dev key
+const keyFilename = "/root/witf/secure/witf-257419-120e447dee16.json"; //prod key
 const visionConfig = {
   projectId: "witf-257419",
   keyFilename
