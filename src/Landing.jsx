@@ -5,7 +5,7 @@ class Landing extends Component {
   render = () => {
     return (
       <div className="wrapper-video-land">
-        <video className="video-land" autoPlay controls>
+        <video className="video-land" autoPlay controls loop>
           <source src="/landingVid.mp4"></source>
         </video>
         <Link to="/signup" className="link-landing">
