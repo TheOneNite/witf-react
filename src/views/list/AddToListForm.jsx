@@ -28,6 +28,7 @@ class UnconnectedAddToListForm extends Component {
     newItem = [newItem];
     newItem = JSON.stringify(newItem);
     data.append("items", newItem);
+    data.append("neededOnly", false);
     const res = await fetch("/list", {
       method: "POST",
       credentials: "include",
