@@ -44,6 +44,11 @@ class UnconnectedAddToListForm extends Component {
       let listRes = await loadList();
       if (listRes.success) {
         this.props.dispatch({ type: "openList", list: listRes.data });
+        this.setState({
+          name: undefined,
+          qty: undefined,
+          unit: undefined
+        });
         return;
       }
     }
