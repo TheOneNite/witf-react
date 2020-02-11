@@ -24,16 +24,17 @@ class UnconnectedLanding extends Component {
     if (this.props.login) {
       return <Redirect to="/fridge" />;
     }
-    return (
-      <div className="wrapper-video-land">
-        <video className="video-land" controls muted>
-          <source src="/landingVid.mp4"></source>
-        </video>
-        <Link to="/signup" className="link-landing">
-          Get Started
-        </Link>
-      </div>
-    );
+    /*
+    <div className="wrapper-video-land">
+    <video className="video-land" controls muted>
+    <source src="/landingVid.mp4"></source>
+    </video>
+    <Link to="/signup" className="link-landing">
+    Get Started
+    </Link>
+    </div>
+    */
+    return <Redirect to="/login" />;
   };
 }
 const mapState = state => {
