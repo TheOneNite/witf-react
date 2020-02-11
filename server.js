@@ -1228,6 +1228,7 @@ app.all("/*", (req, res, next) => {
     res.redirect("https://compayn.space");
     return;
   }
+  console.log("witf");
   // needed for react router
   res.sendFile(__dirname + "/build/index.html");
 });

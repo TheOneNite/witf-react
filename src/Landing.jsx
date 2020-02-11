@@ -26,7 +26,7 @@ class UnconnectedLanding extends Component {
     }
     return (
       <div className="wrapper-video-land">
-        <video className="video-land" autoPlay controls muted>
+        <video className="video-land" controls muted>
           <source src="/landingVid.mp4"></source>
         </video>
         <Link to="/signup" className="link-landing">
