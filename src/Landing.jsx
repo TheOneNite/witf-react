@@ -34,7 +34,6 @@ class UnconnectedLanding extends Component {
     </Link>
     </div>
     */
-    window.location.reload();
     return <Redirect to="/login" />;
   };
 }
