@@ -1221,6 +1221,12 @@ app.post("/edit-cats", upload.none(), (req, res) => {
 // Your endpoints go before this line
 
 app.all("/*", (req, res, next) => {
+  console.log(Object.keys(req));
+  console.log(req.headers.host);
+  if (req.headers.host === "compayn.space") {
+    res.redirect("https://compayn.space");
+    return;
+  }
   // needed for react router
   res.sendFile(__dirname + "/build/index.html");
 });
