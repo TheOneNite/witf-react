@@ -1224,6 +1224,7 @@ app.all("/*", (req, res, next) => {
   console.log(Object.keys(req));
   console.log(req.headers.host);
   if (req.headers.host === "compayn.space") {
+    console.log("redirect to eve");
     res.redirect("https://compayn.space");
     return;
   }
